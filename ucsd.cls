@@ -337,6 +337,10 @@
 \def\listfigurename{List of Figures}
 %                   ~~~~~~~~~~~~~~~
 %
+% \listoflistings:
+\def\listlistingname{List of Listings}
+%
+%
 % \listoftables:
 \def\listtablename{List of Tables}
 %                  ~~~~~~~~~~~~~~
@@ -351,6 +355,10 @@
 %
 % figure environment:
 \def\figurename{Figure}
+%               ~~~~~~
+%
+% listing environment:
+\def\listingname{Listing}
 %               ~~~~~~
 %
 % table environment:
@@ -439,6 +447,7 @@
 \def\@campus{San Diego}
 
 \def\includefigureindex#1{\gdef\@includefigureindex{#1}}
+\def\includelistingindex#1{\gdef\@includelistingindex{#1}}
 \def\includetableindex#1{\gdef\@includetableindex{#1}}
 
 
@@ -1175,6 +1184,34 @@ on microfilm and electronically.}}\\
 \addtolength{\@figurelength}{2.8em}
 \def\l@figure{\normalfont\@dottedtocline{1}{0em}{\@figurelength}}
 
+% LIST OF LISTINGS
+%
+% Single-space list of listings, add it to the table of contents.
+\def\listoflistings{%
+  \@restonecolfalse%
+  \if@twocolumn\@restonecoltrue\onecolumn\fi%
+  \newpage%
+  \centerline{\expandafter\uppercase\expandafter{\listlistingname}}%
+  \bigskip%
+  \phantomsection%
+  \addcontentsline{toc}{frontmatter}{\protect\numberline{}\listlistingname }%
+  %This group overloads \numberline to output ``Listing 1.3'' instead of ``1.3''
+  \begingroup%
+    \let\ORIG@numberline\numberline%
+    \renewcommand*{\numberline}[1]{%
+      \ORIG@numberline{\listingname~##1:}}%
+    {\ssp\@starttoc{lol}}%
+    \if@restonecol\twocolumn\fi%
+  \endgroup %
+  }
+
+\newlength{\@listinglength}
+\settowidth{\@listinglength}{\listingname }
+% Magic value, but consistent with the standard listing length
+\addtolength{\@listinglength}{2.8em}
+\def\l@listing{\normalfont\@dottedtocline{1}{0em}{\@listinglength}}
+
+
 % LIST OF TABLES
 %
 % Single-space list of tables, add it to the table of contents.
@@ -1428,6 +1465,20 @@ on microfilm and electronically.}}\\
 \def\endfigure{\end@float}
 \@namedef{figure*}{\@dblfloat{figure}}
 \@namedef{endfigure*}{\end@dblfloat}
+
+% LISTING
+
+\newcounter{listing}[chapter]
+\def\thelisting{\thechapter.\@arabic\c@listing}
+
+\def\fps@listing{tbp}
+\def\ftype@listing{4}
+\def\ext@listing{lol}
+\def\fnum@listing{\textbf{\listingname~\thelisting}}
+\def\listing{\@float{listing}}
+\def\endlisting{\end@float}
+\@namedef{listing*}{\@dblfloat{listing}}
+\@namedef{endlisting*}{\end@dblfloat}
 
 % TABLE
 %
