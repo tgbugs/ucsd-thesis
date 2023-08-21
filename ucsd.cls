@@ -539,7 +539,7 @@
 
 \begin{alwayssingle}
 \thispagestyle{empty}
-\null\vfill\dsp
+\null\vfill\ucsddsp
 \begin{center}
 {\fmfont
 Copyright \par
